@@ -1,0 +1,14 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        connection.provider_class: org.hibernate.hikaricp.internal.HikariCPConnectionProvider
+        hbm2ddl.auto: create-drop
+
+  datasource:
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 5000

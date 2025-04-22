@@ -1,6 +1,8 @@
 package com.bulka.config;
 
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,7 +29,13 @@ import java.util.Properties;
 @EnableJpaRepositories(basePackages = "com.bulka.repository")
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.bulka")
+@PropertySource("classpath:application.yml")
 public class WebConfig implements WebMvcConfigurer {
+    private static final Logger log = LoggerFactory.getLogger(WebConfig.class);
+
+    public WebConfig() {
+        log.info("WebConfig initialized!");
+    }
 
     @Autowired
     private Environment environment;
@@ -71,12 +79,15 @@ public class WebConfig implements WebMvcConfigurer {
         hibernateProperties.put("hibernate.hbm2ddl.auto", "update");
         return hibernateProperties;
     }
+
     @Bean
     public SessionFactory sessionFactory() {
         return Objects.requireNonNull(entityManagerFactory().getObject()).unwrap(SessionFactory.class);
     }
+
     @Bean
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
     }
+
 }
